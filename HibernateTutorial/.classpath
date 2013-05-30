@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="lib" path="C:/Users/jmcfarlane/Desktop/Hibernate Source Files/antlr-2.7.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/jmcfarlane/Desktop/Hibernate Source Files/commons-collections-3.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/jmcfarlane/Desktop/Hibernate Source Files/commons-logging-1.0.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/jmcfarlane/Desktop/Hibernate Source Files/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/jmcfarlane/Desktop/Hibernate Source Files/ehcache-1.2.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/jmcfarlane/Desktop/Hibernate Source Files/hibernate3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/jmcfarlane/Desktop/Hibernate Source Files/hibernate-testing.jar"/>
+	<classpathentry kind="lib" path="C:/Users/jmcfarlane/Desktop/Hibernate Source Files/javassist-3.9.0.GA.jar"/>
+	<classpathentry kind="lib" path="C:/Users/jmcfarlane/Desktop/Hibernate Source Files/jta-1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/jmcfarlane/Desktop/Hibernate Source Files/p6spy-1.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/jmcfarlane/Desktop/Hibernate Source Files/slf4j-api-1.5.8.jar"/>
+	<classpathentry kind="lib" path="C:/Users/jmcfarlane/Desktop/Hibernate Source Files/slf4j-jdk14-1.5.8.jar"/>
+	<classpathentry kind="lib" path="C:/Users/jmcfarlane/Desktop/Hibernate Source Files/ojdbc14_g.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
