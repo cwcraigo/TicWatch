@@ -49,27 +49,27 @@ CREATE TABLE user_favorite
 , CONSTRAINT fk_user_favorite_2 FOREIGN KEY(favorite_id) REFERENCES favorite(favorite_id));
 
 -- INSERT A USER, FAVORITE AND LINK FAVORITE TO USER
-INSERT INTO tw_user VALUES (1,'1234');
-INSERT INTO tw_user VALUES (2,'5678');
+-- INSERT INTO tw_user VALUES (1,'1234');
+-- INSERT INTO tw_user VALUES (2,'5678');
 
-INSERT INTO favorite VALUES (1,'ABC');
-INSERT INTO favorite VALUES (2,'DEF');
-INSERT INTO favorite VALUES (3,'GHI');
+-- INSERT INTO favorite VALUES (1,'ABC');
+-- INSERT INTO favorite VALUES (2,'DEF');
+-- INSERT INTO favorite VALUES (3,'GHI');
 
-INSERT INTO user_favorite VALUES ( (SELECT user_id FROM tw_user WHERE tw_uid = '1234') , (SELECT favorite_id FROM favorite WHERE favorite = 'ABC') );
-INSERT INTO user_favorite VALUES ( (SELECT user_id FROM tw_user WHERE tw_uid = '1234') , (SELECT favorite_id FROM favorite WHERE favorite = 'DEF') );
-INSERT INTO user_favorite VALUES ( (SELECT user_id FROM tw_user WHERE tw_uid = '1234') , (SELECT favorite_id FROM favorite WHERE favorite = 'GHI') );
+-- INSERT INTO user_favorite VALUES ( (SELECT user_id FROM tw_user WHERE tw_uid = '1234') , (SELECT favorite_id FROM favorite WHERE favorite = 'ABC') );
+-- INSERT INTO user_favorite VALUES ( (SELECT user_id FROM tw_user WHERE tw_uid = '1234') , (SELECT favorite_id FROM favorite WHERE favorite = 'DEF') );
+-- INSERT INTO user_favorite VALUES ( (SELECT user_id FROM tw_user WHERE tw_uid = '1234') , (SELECT favorite_id FROM favorite WHERE favorite = 'GHI') );
 
 -- COMMIT
 COMMIT;
 
 -- SELECT FAVORITES FOR SPECIFIC USER
 SELECT favorite
-FROM favorite f INNER JOIN user_favorite tf
-ON f.favorite_id = tf.favorite_id
+FROM favorite f INNER JOIN favorites tf
+ON f.fav_id = tf.fav_id
 INNER JOIN tw_user u
 ON u.user_id = tf.user_id
-WHERE u.tw_uid = '1234';
+WHERE u.user_uid = '&input';
 
 
 /* ****************************************
@@ -81,27 +81,27 @@ WHERE u.tw_uid = '1234';
 * ************************************** */
 
 -- CONDITIONAL DROP OF TABLE
-BEGIN
-  FOR i IN (SELECT table_name FROM user_tables WHERE table_name = 'TW_FAVORITES') LOOP
-    EXECUTE IMMEDIATE 'DROP TABLE '||i.table_name||' CASCADE CONSTRAINTS';
-  END LOOP;
-END;
-/
+-- BEGIN
+--   FOR i IN (SELECT table_name FROM user_tables WHERE table_name = 'TW_FAVORITES') LOOP
+--     EXECUTE IMMEDIATE 'DROP TABLE '||i.table_name||' CASCADE CONSTRAINTS';
+--   END LOOP;
+-- END;
+-- /
 
--- TABLE TW_FAVORITES
-CREATE TABLE tw_favorites
-( tw_uid   VARCHAR2(20) CONSTRAINT nn_tw_favorites_1 NOT NULL
-, favorite VARCHAR2(4)  CONSTRAINT nn_tw_favorites_2 NOT NULL);
+-- -- TABLE TW_FAVORITES
+-- CREATE TABLE tw_favorites
+-- ( tw_uid   VARCHAR2(20) CONSTRAINT nn_tw_favorites_1 NOT NULL
+-- , favorite VARCHAR2(4)  CONSTRAINT nn_tw_favorites_2 NOT NULL);
 
--- INSERT SOME EXAMPLES
-INSERT INTO tw_favorites VALUES ('1234','APL');
-INSERT INTO tw_favorites VALUES ('1234','XYZ');
-INSERT INTO tw_favorites VALUES ('1234','AAA');
-INSERT INTO tw_favorites VALUES ('5678','YYY');
-INSERT INTO tw_favorites VALUES ('5678','XII');
+-- -- INSERT SOME EXAMPLES
+-- INSERT INTO tw_favorites VALUES ('1234','APL');
+-- INSERT INTO tw_favorites VALUES ('1234','XYZ');
+-- INSERT INTO tw_favorites VALUES ('1234','AAA');
+-- INSERT INTO tw_favorites VALUES ('5678','YYY');
+-- INSERT INTO tw_favorites VALUES ('5678','XII');
 
--- COMMIT
-COMMIT;
+-- -- COMMIT
+-- COMMIT;
 
--- GET ALL FAVORITES BY ANDROID UID
-SELECT favorite FROM tw_favorites WHERE tw_uid = '1234';
+-- -- GET ALL FAVORITES BY ANDROID UID
+-- SELECT favorite FROM tw_favorites WHERE tw_uid = '1234';
