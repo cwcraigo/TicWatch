@@ -3,16 +3,17 @@ package Server;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 public class FavBean implements Serializable {
 
     private String command;
     private String uuid;
-    private ArrayList<String> symbols;
+    private Set<Favorite> symbols;
 
     public FavBean() {}
     
-    public FavBean(String command, String uuid, ArrayList<String> symbols) {
+    public FavBean(String command, String uuid, Set<Favorite> symbols) {
 	this.uuid = uuid;
 	this.symbols = symbols;
 	this.command = command;
@@ -20,7 +21,7 @@ public class FavBean implements Serializable {
     
     public FavBean(HashMap map) {
 	this.uuid = (String) map.get("uuid");
-	this.symbols = (ArrayList<String>) map.get("symbols");
+	this.symbols = (Set<Favorite>) map.get("symbols");
 	this.command = (String) map.get("command");
     }
 
@@ -45,11 +46,11 @@ public class FavBean implements Serializable {
         this.uuid = uuid;
     }
 
-    public ArrayList<String> getSymbols() {
+    public Set<Favorite> getSymbols() {
         return symbols;
     }
 
-    public void setSymbols(ArrayList<String> symbols) {
+    public void setSymbols(Set<Favorite> symbols) {
         this.symbols = symbols;
     }
 

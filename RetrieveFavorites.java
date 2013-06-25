@@ -1,11 +1,11 @@
 package Server;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
 import org.hibernate.Query;
-import org.hibernate.Transaction;
 import org.hibernate.classic.Session;
 
 import Server.AppHandler;
@@ -20,7 +20,7 @@ public class RetrieveFavorites implements AppHandler {
 	System.out.println("RETRIEVEFAVORITES: get -> " + fbean.toString());
 
 	Session ses = HibernateUtilSingleton.getSessionFactory().getCurrentSession();
-	Transaction trans = ses.beginTransaction();
+	ses.beginTransaction();
 
 	Query singleUserQ = ses.createQuery("select u from User as u where u.uuid='"+ (String) fbean.getUuid() + "'");
 	User user = (User) singleUserQ.uniqueResult();
@@ -30,12 +30,12 @@ public class RetrieveFavorites implements AppHandler {
 	list = user.getFavorites();
 	
 	Iterator<Favorite> iter = list.iterator();
-	ArrayList<String> symbols = new ArrayList<String>();
+	Set<Favorite> symbols = new HashSet<Favorite>();
 	while(iter.hasNext()){
-	    System.out.println(iter.next().getFavorite());
-	    symbols.add(iter.next().getFavorite());
+	    symbols.add(iter.next());
 	}
 
+	System.out.println("RETRIEVEFAVORITES: symbols = "+symbols);
 	fbean.setSymbols(symbols);
 	
 	fbean.setCommand("done");

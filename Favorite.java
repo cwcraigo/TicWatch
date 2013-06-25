@@ -13,7 +13,7 @@ public class Favorite {
 	@GeneratedValue
 	private Integer id;
 	private String favorite;
-	
+
 	public String getFavorite() {
 		return favorite;
 	}
