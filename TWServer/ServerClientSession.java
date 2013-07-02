@@ -1,5 +1,7 @@
 package Server;
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.util.HashMap;
 import org.quickconnect.json.JSONException;
@@ -19,33 +21,33 @@ public class ServerClientSession implements Runnable {
 	this.controller = controller;
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public void run() {
 
 	try {
+
+	    InputStream instream = clientSocket.getInputStream();
+	    OutputStream outstream = clientSocket.getOutputStream();
 	    
-	    // create an input and output stream (channel/thread?) from client
-	    inFromClient = new JSONInputStream(clientSocket.getInputStream());
-	    outToClient = new JSONOutputStream(clientSocket.getOutputStream());
+	    inFromClient = new JSONInputStream(instream);
+	    outToClient = new JSONOutputStream(outstream);
+	    
+	    HashMap input = (HashMap) inFromClient.readObject();
+	    FavBean bean = new FavBean(input);
 
-	    // wait for message from input stream
-	    while (check && clientSocket.isConnected()) {
-
-		HashMap input = (HashMap)inFromClient.readObject();
-		FavBean fbean = new FavBean(input);
-
-		FavBean result = controller.handleRequest(fbean);
-		
-		outToClient.writeObject(result);
-
-	    } // end wait for message
+	    FavBean result = controller.handleRequest(bean);
+	    
+	    outToClient.writeObject(result);
+	    
 	    clientSocket.close();
+
 	} catch (JSONException e) {
 	    check = false;
 	} catch (Exception e) {
 	    e.printStackTrace();
 	} // end try/catch
-	
-    } //end run()
+
+    } // end run()
 
 } // end class

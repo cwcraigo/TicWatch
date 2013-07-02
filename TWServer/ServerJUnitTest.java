@@ -1,0 +1,52 @@
+package Server;
+
+import org.junit.Test;
+import static org.junit.Assert.*;
+import org.junit.runner.JUnitCore;
+import org.junit.runner.Result;
+import org.junit.runner.notification.Failure;
+
+public class ServerJUnitTest {
+
+    public static class TestJunit {
+
+	String command2 = "Retrieve";
+	String uuid2 = "1234";
+	FavBean bean = new FavBean(command2, uuid2, null);
+	Client client = new Client(bean);
+
+	@Test
+	public void testRetrieveFavorites() {
+	    client.connectToServer();
+	    assertNotNull(client.bean.getSymbols());
+	    assertEquals("done", client.bean.getCommand());
+	}
+    }
+    
+    public static void main(String[] args) {
+	Result result = JUnitCore.runClasses(TestJunit.class);
+	for (Failure failure : result.getFailures()) {
+	    System.out.println(failure.toString());
+	}
+	System.out.println(result.wasSuccessful());
+    } // end main
+
+} // end ServerJUnitTest class
+
+// void assertEquals(boolean expected, boolean actual)
+// Check that two primitives/Objects are equal
+
+// void assertFalse(boolean condition)
+// Check that a condition is false
+
+// void assertNotNull(Object object)
+// Check that an object isn't null.
+
+// void assertNull(Object object)
+// Check that an object is null
+
+// void assertTrue(boolean condition)
+// Check that a condition is true.
+
+// void fail()
+// Fails a test with no message.

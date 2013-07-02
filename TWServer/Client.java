@@ -16,6 +16,7 @@ public class Client {
 	this.bean = bean;
     }
 
+    @SuppressWarnings("unchecked")
     public void connectToServer() {
 
 	try {
@@ -24,10 +25,10 @@ public class Client {
 
 	    System.out.println("CLIENT: socket connected.");
 
-	    // create an input and output stream (channel/thread?) from client
+	    // create an input and output stream (channel) from client
 	    JSONOutputStream outToServer = new JSONOutputStream(toServer.getOutputStream());
 	    JSONInputStream inFromServer = new JSONInputStream(toServer.getInputStream());
-	    
+	    System.out.println("CLIENT: bean = "+this.bean);
 	    // send the bean
 	    outToServer.writeObject(this.bean);
 
@@ -35,13 +36,14 @@ public class Client {
 	    int count = 0;
 	    while (check) {
 		System.out.println("CLIENT: waiting for responsse.");
-		HashMap result = (HashMap) inFromServer.readObject();
+		HashMap<String,Object> result = (HashMap<String,Object>) inFromServer.readObject();
 
 		System.out.println("CLIENT: Result is [" + result + "]");
-		String done = (String) result.get("command");
+		this.bean = new FavBean(result);
+		String done = this.bean.getCommand();
 
 		if (done.equals("done") || count == 3) {
-		    // outToServer.writeObject("close");
+//		    outToServer.writeObject("close");
 		    toServer.close();
 		    System.out.println("CLIENT: connection closed. COUNT["+ count + "]");
 		    check = false;

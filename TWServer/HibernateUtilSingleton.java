@@ -1,16 +1,13 @@
 package Server;
 
 import org.hibernate.SessionFactory;
-
 import org.hibernate.cfg.AnnotationConfiguration;
 
 /*
 * This class follows the singleton pattern.
 */
 
-public class HibernateUtilSingleton
-
-{
+public class HibernateUtilSingleton {
 
 private static final SessionFactory sessionFactory;
 
@@ -46,7 +43,7 @@ private static final SessionFactory sessionFactory;
 
 //            config.setProperty("hibernate.hbm2ddl.auto", "create-drop");
 
-            config.setProperty("hibernate.show_sql", "true");
+            config.setProperty("hibernate.show_sql", "false");
 
             config.setProperty("hibernate.transaction.factory_class", "org.hibernate.transaction.JDBCTransactionFactory");
 

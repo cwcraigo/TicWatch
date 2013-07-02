@@ -3,25 +3,29 @@ package Server;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
+@SuppressWarnings("serial")
 public class FavBean implements Serializable {
 
     private String command;
     private String uuid;
-    private Set<Favorite> symbols;
+    private ArrayList<String> symbols;
 
     public FavBean() {}
     
-    public FavBean(String command, String uuid, Set<Favorite> symbols) {
+    public FavBean(String command, String uuid, ArrayList<String> symbols) {
 	this.uuid = uuid;
 	this.symbols = symbols;
 	this.command = command;
     }
     
-    public FavBean(HashMap map) {
+    @SuppressWarnings("unchecked")
+    public FavBean(HashMap<String,Object> map) {
 	this.uuid = (String) map.get("uuid");
-	this.symbols = (Set<Favorite>) map.get("symbols");
+	this.symbols = (ArrayList<String>) map.get("symbols");
 	this.command = (String) map.get("command");
     }
 
@@ -47,10 +51,18 @@ public class FavBean implements Serializable {
     }
 
     public Set<Favorite> getSymbols() {
-        return symbols;
+	Favorite f = new Favorite();
+	Set<Favorite> favSet = new HashSet<Favorite>();
+	Iterator<String> it = this.symbols.iterator();
+	while(it.hasNext()){
+	    f.setFavorite(it.next());
+	    favSet.add(f);
+	}
+	
+        return favSet;
     }
 
-    public void setSymbols(Set<Favorite> symbols) {
+    public void setSymbols(ArrayList<String> symbols) {
         this.symbols = symbols;
     }
 
