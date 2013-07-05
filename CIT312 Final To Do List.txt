@@ -1,0 +1,26 @@
+Final List of Diagrams Needed CIT312
+
+State Diagrams
+ Browse Favorites  
+ Launch   			Shawn
+ Remove Favorite
+
+
+
+Sequence Diagrams
+  Launch  
+  Search for Symbol
+  Browse Favorites
+  Remove Favorites
+
+
+
+
+Class Diagrams
+	 Jeff
+	Client
+	Server
+
+
+Use Cases
+Done
