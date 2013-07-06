@@ -15,7 +15,7 @@
   <element>
     <type>com.umlet.element.custom.State</type>
     <coordinates>
-      <x>480</x>
+      <x>460</x>
       <y>10</y>
       <w>270</w>
       <h>50</h>
@@ -40,7 +40,7 @@ Next favorite selected
   <element>
     <type>com.umlet.element.Note</type>
     <coordinates>
-      <x>310</x>
+      <x>290</x>
       <y>10</y>
       <w>140</w>
       <h>40</h>
