@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="11.5.1">
+  <zoom_level>10</zoom_level>
+  <element>
+    <type>com.umlet.element.custom.InitialState</type>
+    <coordinates>
+      <x>360</x>
+      <y>50</y>
+      <w>20</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.custom.State</type>
+    <coordinates>
+      <x>480</x>
+      <y>10</y>
+      <w>270</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>BROWSE FAVORITES STATE DIAGRAM
+bg=light_gray</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>260</x>
+      <y>40</y>
+      <w>204</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+Next favorite selected
+</panel_attributes>
+    <additional_attributes>110;80;110;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Note</type>
+    <coordinates>
+      <x>310</x>
+      <y>10</y>
+      <w>140</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Current Favorite 
+is displayed.</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.custom.State</type>
+    <coordinates>
+      <x>290</x>
+      <y>390</y>
+      <w>150</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Displaying updated
+Favorite</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.custom.FinalState</type>
+    <coordinates>
+      <x>760</x>
+      <y>120</y>
+      <w>20</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>680</x>
+      <y>100</y>
+      <w>50</w>
+      <h>330</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>30;310;30;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.custom.State</type>
+    <coordinates>
+      <x>290</x>
+      <y>300</y>
+      <w>150</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Updating current
+Favorite.
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>300</x>
+      <y>310</y>
+      <w>122</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+[Updated]</panel_attributes>
+    <additional_attributes>70;80;70;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>410</x>
+      <y>80</y>
+      <w>370</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+[Connection refused]</panel_attributes>
+    <additional_attributes>350;50;30;50</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>410</x>
+      <y>380</y>
+      <w>320</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>300;30;30;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.custom.State</type>
+    <coordinates>
+      <x>290</x>
+      <y>120</y>
+      <w>150</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Connecting to 
+Service</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.custom.State</type>
+    <coordinates>
+      <x>290</x>
+      <y>210</y>
+      <w>150</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Waiting for 
+favorite data
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>290</x>
+      <y>220</y>
+      <w>158</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+[Data recieved]
+</panel_attributes>
+    <additional_attributes>80;80;80;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>410</x>
+      <y>110</y>
+      <w>262</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+[Connection timed out]
+</panel_attributes>
+    <additional_attributes>30;30;160;30;160;120;30;120</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>300</x>
+      <y>130</y>
+      <w>138</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+[Connected]</panel_attributes>
+    <additional_attributes>70;80;70;30</additional_attributes>
+  </element>
+</diagram>
