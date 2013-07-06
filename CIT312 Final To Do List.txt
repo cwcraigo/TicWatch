@@ -1,8 +1,8 @@
 Final List of Diagrams Needed CIT312
 
 State Diagrams
- Browse Favorites  
- Launch   			Shawn
+   
+   			
  Remove Favorite
 
 
