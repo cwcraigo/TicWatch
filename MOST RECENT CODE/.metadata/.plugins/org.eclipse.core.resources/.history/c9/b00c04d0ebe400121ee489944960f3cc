@@ -1,0 +1,41 @@
+package Server;
+
+import java.io.InputStream;
+import java.net.Socket;
+import java.util.HashMap;
+import org.quickconnect.json.JSONInputStream;
+import org.quickconnect.json.JSONOutputStream;
+
+
+public class ServerClientSession implements Runnable {
+
+    public Socket clientSocket;
+    public ApplicationController controller;
+    public JSONInputStream inFromClient;
+    public JSONOutputStream outToClient;
+
+    public ServerClientSession(Socket socket, ApplicationController controller) {
+	this.clientSocket = socket;
+	this.controller = controller;
+    }
+
+    @SuppressWarnings({ "rawtypes" })
+    @Override
+    public void run() {
+
+	try {
+
+	    InputStream instream = clientSocket.getInputStream();	    
+	    inFromClient = new JSONInputStream(instream);
+	    
+	    HashMap input = (HashMap) inFromClient.readObject();
+
+	    controller.handleRequest(input,clientSocket);
+
+	} catch (Exception e) {
+	    e.printStackTrace();
+	} // end try/catch
+
+    } // end run()
+
+} // end class

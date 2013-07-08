@@ -1,0 +1,7 @@
+package Server;
+
+import java.net.Socket;
+
+public interface AppHandler {    
+    public void handleIt(FavBean bean, Socket clientSocket);
+}

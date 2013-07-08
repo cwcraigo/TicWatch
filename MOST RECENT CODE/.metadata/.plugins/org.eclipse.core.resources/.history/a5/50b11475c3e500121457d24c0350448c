@@ -1,0 +1,66 @@
+package gir.TicWatch;
+
+import gir.example.R;
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.TextView;
+import android.widget.ViewFlipper;
+
+public class HttpService extends Activity {
+
+	
+	private GestureDetector gestureDetector;
+	View.OnTouchListener gestureListener;
+	private Animation slideLeftIn;
+	private Animation slideLeftOut;
+	private Animation slideRightIn;
+	private Animation slideRightOut;
+	private ViewFlipper viewFlipper;
+	
+	public static TextView name;
+	public static TextView symbol;
+	public static TextView price;
+	public static TextView change;
+	public static TextView changePercent;
+	
+	@SuppressWarnings("deprecation")
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+
+		viewFlipper = (ViewFlipper) findViewById(R.id.flipper);
+		slideLeftIn = AnimationUtils.loadAnimation(this, R.anim.slide_left_in);
+		slideRightIn = AnimationUtils
+				.loadAnimation(this, R.anim.slide_right_in);
+
+		gestureDetector = new GestureDetector(new MyGestureDetector());
+		gestureListener = new View.OnTouchListener() {
+			public boolean onTouch(View v, MotionEvent event) {
+				if (gestureDetector.onTouchEvent(event)) {
+					return true;
+				}
+				return false;
+			}
+		};
+
+		name = (TextView) findViewById(R.id.name1);
+		symbol = (TextView) findViewById(R.id.symbol1);
+		price = (TextView) findViewById(R.id.price1);
+		change = (TextView) findViewById(R.id.change1);
+		changePercent = (TextView) findViewById(R.id.changePercent1);
+
+	} // end onCreate()
+
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		if (gestureDetector.onTouchEvent(event))
+			return true;
+		else
+			return false;
+	} // end onTouchEvent()
+}

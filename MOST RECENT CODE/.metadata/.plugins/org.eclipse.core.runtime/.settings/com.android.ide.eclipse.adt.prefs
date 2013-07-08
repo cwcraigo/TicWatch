@@ -1,0 +1,6 @@
+com.android.ide.eclipse.adt.fixLegacyEditors=1
+com.android.ide.eclipse.adt.sdk=/Users/craigchristensen/Applications/adt-bundle-mac-x86_64-20130514/sdk
+com.android.ide.eclipse.adt.xmlEditor=true
+design.palette.flyout.width=162
+design.structure.flyout.width=532
+eclipse.preferences.version=1

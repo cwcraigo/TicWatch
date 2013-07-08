@@ -1,0 +1,162 @@
+package gir.TicWatch;
+
+import gir.example.R;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONObject;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.GestureDetector;
+import android.view.GestureDetector.SimpleOnGestureListener;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.TextView;
+import android.widget.ViewFlipper;
+
+/* The following example is based on the following blog entry
+ * http://www.codeshogun.com/blog/2009/04/16/how-to-implement-swipe-action-in-android/
+ */
+
+public class MainActivity extends Activity {
+
+	private static final int SWIPE_MIN_DISTANCE = 120;
+	private static final int SWIPE_MAX_OFF_PATH = 250;
+	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+	private GestureDetector gestureDetector;
+	View.OnTouchListener gestureListener;
+	private Animation slideLeftIn;
+	private Animation slideLeftOut;
+	private Animation slideRightIn;
+	private Animation slideRightOut;
+	private ViewFlipper viewFlipper;
+	private HttpClient client;
+
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		
+		viewFlipper = (ViewFlipper) findViewById(R.id.flipper);
+		slideLeftIn = AnimationUtils.loadAnimation(this, R.anim.slide_left_in);
+		slideRightIn = AnimationUtils
+				.loadAnimation(this, R.anim.slide_right_in);
+
+		gestureDetector = new GestureDetector(new MyGestureDetector());
+		gestureListener = new View.OnTouchListener() {
+			public boolean onTouch(View v, MotionEvent event) {
+				if (gestureDetector.onTouchEvent(event)) {
+					return true;
+				}
+				return false;
+			}
+		};
+		
+		/* Create the Client */
+		
+		client = new DefaultHttpClient();
+
+		/* Get Google Information */
+		
+		
+
+		Thread trd = new Thread(new Runnable(){
+			@Override
+			public void run(){
+
+//				JSONObject response = null;
+
+				TextView name = (TextView)findViewById(R.id.name1);
+				TextView symbol = (TextView)findViewById(R.id.symbol1);
+				TextView price = (TextView)findViewById(R.id.price1);
+				TextView change = (TextView)findViewById(R.id.change1);
+				TextView changePercent = (TextView)findViewById(R.id.changePercent1);
+
+			
+				try{
+//					HttpPost httppost = new HttpPost("http://cwcraigo.com/stockfeed.php?symbols=GOOG");
+//					HttpResponse hr = client.execute(httppost);
+//					StatusLine statusLine = hr.getStatusLine();
+//					int statusCode = statusLine.getStatusCode();
+//
+//					if (statusCode == 200) {
+//						HttpEntity entity = hr.getEntity();
+//						InputStream content = entity.getContent();
+//						StringBuilder builder = new StringBuilder();
+//						BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+//						String line;
+//						while ((line = reader.readLine()) != null) {
+//							builder.append(line);
+//						}
+//
+//						response = new JSONObject(builder.toString());
+//						
+//						response = response.getJSONObject("GOOG");
+//
+//						name.setText(response.getString("name"));
+//						symbol.setText(response.getString("symbol"));
+//						price.setText(response.getString("price"));
+//						change.setText(response.getString("change"));
+//						changePercent.setText(response.getString("changePercent"));
+						
+						
+						name.setText(response.getString("name"));
+						symbol.setText(response.getString("symbol"));
+						price.setText(response.getString("price"));
+						change.setText(response.getString("change"));
+						changePercent.setText(response.getString("changePercent"));
+					}
+				} catch(Exception e){}
+
+				//code to do the HTTP request
+			}
+		});
+		trd.start();
+
+		/* End Google Information */
+	}
+
+	class MyGestureDetector extends SimpleOnGestureListener {
+		@Override
+		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+				float velocityY) {
+			try {
+				if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
+					return false;
+				// right to left swipe
+				if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE
+						&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+					viewFlipper.setInAnimation(slideLeftIn);
+					viewFlipper.setOutAnimation(slideLeftOut);
+					viewFlipper.showNext();
+				} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE
+						&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+					viewFlipper.setInAnimation(slideRightIn);
+					viewFlipper.setOutAnimation(slideRightOut);
+					viewFlipper.showPrevious();
+				}
+			} catch (Exception e) {
+				// nothing
+			}
+			return false;
+		}
+	}
+
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		if (gestureDetector.onTouchEvent(event))
+			return true;
+		else
+			return false;
+	}
+}

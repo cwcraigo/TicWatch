@@ -1,0 +1,25 @@
+package gir.TicWatch;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public class GetHttp {
+	public String  						symbols = "";
+	public HashMap<String, Object> 		data;
+	public ArrayList<SymbolBean> 		stringBeans = new ArrayList<SymbolBean>();
+
+	public GetHttp(String symbols) {
+		setSymbols(symbols);
+	}
+
+	public GetHttp(String[] symbols) {
+		int count = symbols.length - 1;
+		for (int i = 0; i < symbols.length; i++) {
+			if (i != count) {
+				this.symbols += symbols[i] + "+";
+			} else {
+				this.symbols += symbols[i];
+			}
+		}
+	}
+}

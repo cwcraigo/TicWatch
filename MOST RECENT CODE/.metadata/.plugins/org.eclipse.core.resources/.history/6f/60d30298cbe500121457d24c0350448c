@@ -1,0 +1,60 @@
+package gir.example;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
+import org.apache.http.client.methods.HttpPost;
+import org.json.JSONObject;
+
+import android.widget.TextView;
+
+public class HttpRunnable implements Runnable {
+
+	@Override
+	public void run() {
+		
+		JSONObject response = null;
+
+		TextView name = (TextView)findViewById(R.id.name1);
+		TextView symbol = (TextView)findViewById(R.id.symbol1);
+		TextView price = (TextView)findViewById(R.id.price1);
+		TextView change = (TextView)findViewById(R.id.change1);
+		TextView changePercent = (TextView)findViewById(R.id.changePercent1);
+
+		try{
+			HttpPost httppost = new HttpPost("http://cwcraigo.com/stockfeed.php?symbols=GOOG");
+			HttpResponse hr = client.execute(httppost);
+			StatusLine statusLine = hr.getStatusLine();
+			int statusCode = statusLine.getStatusCode();
+
+			if (statusCode == 200) {
+				HttpEntity entity = hr.getEntity();
+				InputStream content = entity.getContent();
+				StringBuilder builder = new StringBuilder();
+				BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+				String line;
+				while ((line = reader.readLine()) != null) {
+					builder.append(line);
+				}
+
+				response = new JSONObject(builder.toString());
+				
+				response = response.getJSONObject("GOOG");
+
+				name.setText(response.getString("name"));
+				symbol.setText(response.getString("symbol"));
+				price.setText(response.getString("price"));
+				change.setText(response.getString("change"));
+				changePercent.setText(response.getString("changePercent"));
+			}
+		} catch(Exception e){}
+
+		//code to do the HTTP request
+	}
+	}
+
+}

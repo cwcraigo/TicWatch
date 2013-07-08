@@ -1,0 +1,58 @@
+package com.example.ticwatch3;
+
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.HashMap;
+
+import org.quickconnectfamily.json.JSONInputStream;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.Menu;
+import android.widget.TextView;
+
+public class MainActivity extends Activity {
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		
+		Thread trd = new Thread(new Runnable(){
+			
+			@Override
+			public void run(){
+
+				TextView name = (TextView)findViewById(R.id.name1);
+				TextView symbol = (TextView)findViewById(R.id.symbol1);
+				TextView price = (TextView)findViewById(R.id.price1);
+				TextView change = (TextView)findViewById(R.id.change1);
+				TextView changePercent = (TextView)findViewById(R.id.changePercent1);
+
+				try{
+
+				    URL url = new URL("http://cwcraigo.com/stockfeed.php?symbols=AAPL+ORCL+GOOG");
+				    HttpURLConnection con = (HttpURLConnection) url.openConnection();
+				    JSONInputStream input = new JSONInputStream(con.getInputStream());
+				    HashMap map = (HashMap) input.readObject();
+				    
+				    HashMap bean = (HashMap) map.get("AAPL");
+					name.setText((CharSequence)bean.get("name"));
+					symbol.setText((CharSequence)bean.get("symbol"));
+					price.setText((CharSequence)bean.get("price"));
+					change.setText((CharSequence)bean.get("change"));
+					changePercent.setText((CharSequence)bean.get("changePercent"));
+				} catch(Exception e){}
+			}
+		});
+		trd.start();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+
+}

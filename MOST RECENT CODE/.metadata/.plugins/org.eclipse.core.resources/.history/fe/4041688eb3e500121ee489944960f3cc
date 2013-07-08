@@ -1,0 +1,194 @@
+package gir.example;
+
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import org.quickconnectfamily.json.JSONInputStream;
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.GestureDetector;
+import android.view.GestureDetector.SimpleOnGestureListener;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.TextView;
+import android.widget.ViewFlipper;
+
+public class HttpService extends Activity implements Runnable  {
+	
+	
+	private static final int SWIPE_MIN_DISTANCE = 120;
+	private static final int SWIPE_MAX_OFF_PATH = 250;
+	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+	private GestureDetector gestureDetector;
+	View.OnTouchListener gestureListener;
+	private Animation slideLeftIn;
+	private Animation slideLeftOut;
+	private Animation slideRightIn;
+	private Animation slideRightOut;
+	private ViewFlipper viewFlipper;
+	
+	
+	
+
+	public String  						symbols = "";
+	public HashMap<String, Object> 		data;
+	public ArrayList<SymbolBean> 		stringBeans = new ArrayList<SymbolBean>();
+
+	public HttpService(String symbols) {
+		setSymbols(symbols);
+	}
+
+	public HttpService(String[] symbols) {
+		int count = symbols.length - 1;
+		for (int i = 0; i < symbols.length; i++) {
+			if (i != count) {
+				this.symbols += symbols[i] + "+";
+			} else {
+				this.symbols += symbols[i];
+			}
+		}
+	}
+
+	@Override
+	public void run() {
+		
+	} // end run
+		
+
+
+
+	
+	// -------------------------------------------------
+	// onCreate()
+	// -------------------------------------------------
+	
+	@SuppressWarnings({ "deprecation", "unchecked" })
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		
+		viewFlipper = (ViewFlipper) findViewById(R.id.flipper);
+		slideLeftIn = AnimationUtils.loadAnimation(this, R.anim.slide_left_in);
+		slideRightIn = AnimationUtils.loadAnimation(this, R.anim.slide_right_in);
+
+		gestureDetector = new GestureDetector(new MyGestureDetector());
+		gestureListener = new View.OnTouchListener() {
+			public boolean onTouch(View v, MotionEvent event) {
+				if (gestureDetector.onTouchEvent(event)) {
+					return true;
+				}
+				return false;
+			}
+		};
+		
+		TextView name = (TextView)findViewById(R.id.name1);
+		TextView symbol = (TextView)findViewById(R.id.symbol1);
+		TextView price = (TextView)findViewById(R.id.price1);
+		TextView change = (TextView)findViewById(R.id.change1);
+		TextView changePercent = (TextView)findViewById(R.id.changePercent1);
+		
+		
+		
+		try {
+			// Set the URL object to point to the JSON file
+			URL url = new URL("http://cwcraigo.com/stockfeed.php?symbols="+symbols);
+
+			// Connect to the site using HttpURLConnecton
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+
+			// Setup input stream using JSONInputStream to easily retrieve data
+			JSONInputStream input = new JSONInputStream(con.getInputStream());
+
+			// Get the JSON object as a HashMap
+			setData((HashMap<String, Object>) input.readObject());
+
+			for (String key : data.keySet()) {
+				stringBeans.add(new SymbolBean((HashMap<String,String>)data.get(key)));
+			}
+			
+			// System.out.println(this.stringBeans.toString());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		SymbolBean bean = stringBeans.get(0);
+		
+		name.setText(bean.getName());
+		symbol.setText(bean.getSymbol());
+		price.setText(bean.getPrice());
+		change.setText(bean.getChange());
+		changePercent.setText(bean.getChangePercent());
+
+	}// end onCreate()
+
+	class MyGestureDetector extends SimpleOnGestureListener {
+		@Override
+		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+				float velocityY) {
+			try {
+				if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
+					return false;
+				// right to left swipe
+				if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE
+						&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+					viewFlipper.setInAnimation(slideLeftIn);
+					viewFlipper.setOutAnimation(slideLeftOut);
+					viewFlipper.showNext();
+				} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE
+						&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+					viewFlipper.setInAnimation(slideRightIn);
+					viewFlipper.setOutAnimation(slideRightOut);
+					viewFlipper.showPrevious();
+				}
+			} catch (Exception e) {
+				// nothing
+			}
+			return false;
+		}
+	} // end MyGestureDetector class
+
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		if (gestureDetector.onTouchEvent(event))
+			return true;
+		else
+			return false;
+	} // end onTouchEvent()
+	
+	
+	
+	
+	// -------------------------------------------------
+	// Getters and Setters
+	// -------------------------------------------------
+	
+	public String getSymbols() {
+		return symbols;
+	}
+
+	public void setSymbols(String symbols) {
+		this.symbols = symbols;
+	}
+
+	public HashMap<String, Object> getData() {
+		return data;
+	}
+
+	public void setData(HashMap<String, Object> data) {
+		this.data = data;
+	}
+
+	public ArrayList<SymbolBean> getStringBeans() {
+		return stringBeans;
+	}
+
+	public void setStringBeans(ArrayList<SymbolBean> stringBeans) {
+		this.stringBeans = stringBeans;
+	}
+
+}

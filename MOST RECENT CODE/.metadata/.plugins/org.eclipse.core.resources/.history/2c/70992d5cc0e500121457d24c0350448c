@@ -1,0 +1,107 @@
+package gir.TicWatch;
+
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import org.quickconnectfamily.json.JSONInputStream;
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.GestureDetector;
+import android.view.GestureDetector.SimpleOnGestureListener;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.TextView;
+import android.widget.ViewFlipper;
+
+public class HttpService implements Runnable  {
+	public String  						symbols = "";
+	public HashMap<String, Object> 		data;
+	public ArrayList<SymbolBean> 		stringBeans = new ArrayList<SymbolBean>();
+
+	public HttpService(String symbols) {
+		setSymbols(symbols);
+	}
+
+	public HttpService(String[] symbols) {
+		int count = symbols.length - 1;
+		for (int i = 0; i < symbols.length; i++) {
+			if (i != count) {
+				this.symbols += symbols[i] + "+";
+			} else {
+				this.symbols += symbols[i];
+			}
+		}
+	}
+
+
+
+	@Override
+	public void run() {
+
+		try {
+			// Set the URL object to point to the JSON file
+			URL url = new URL("http://cwcraigo.com/stockfeed.php?symbols="+symbols);
+
+			// Connect to the site using HttpURLConnecton
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+
+			// Setup input stream using JSONInputStream to easily retrieve data
+			JSONInputStream input = new JSONInputStream(con.getInputStream());
+
+			// Get the JSON object as a HashMap
+			setData((HashMap<String, Object>) input.readObject());
+
+			for (String key : data.keySet()) {
+				stringBeans.add(new SymbolBean((HashMap<String,String>)data.get(key)));
+			}
+			
+			SymbolBean bean = stringBeans.get(0);
+			
+			MainActivity.name.setText(bean.getName());
+			MainActivity.symbol.setText(bean.getSymbol());
+			MainActivity.price.setText(bean.getPrice());
+			MainActivity.change.setText(bean.getChange());
+			MainActivity.changePercent.setText(bean.getChangePercent());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		
+	}
+	
+	
+	// -------------------------------------------------
+	// Getters and Setters
+	// -------------------------------------------------
+	
+	public String getSymbols() {
+		return symbols;
+	}
+
+	public void setSymbols(String symbols) {
+		this.symbols = symbols;
+	}
+
+	public HashMap<String, Object> getData() {
+		return data;
+	}
+
+	public void setData(HashMap<String, Object> data) {
+		this.data = data;
+	}
+
+	public ArrayList<SymbolBean> getStringBeans() {
+		return stringBeans;
+	}
+
+	public void setStringBeans(ArrayList<SymbolBean> stringBeans) {
+		this.stringBeans = stringBeans;
+	}
+
+	
+
+}

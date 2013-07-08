@@ -1,0 +1,137 @@
+package gir.example;
+
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
+import org.quickconnectfamily.json.JSONInputStream;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.GestureDetector;
+import android.view.GestureDetector.SimpleOnGestureListener;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.TextView;
+import android.widget.ViewFlipper;
+
+/* The following example is based on the following blog entry
+ * http://www.codeshogun.com/blog/2009/04/16/how-to-implement-swipe-action-in-android/
+ */
+
+public class MainActivity extends Activity {
+
+	private static final int SWIPE_MIN_DISTANCE = 120;
+	private static final int SWIPE_MAX_OFF_PATH = 250;
+	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+	private GestureDetector gestureDetector;
+	View.OnTouchListener gestureListener;
+	private Animation slideLeftIn;
+	private Animation slideLeftOut;
+	private Animation slideRightIn;
+	private Animation slideRightOut;
+	private ViewFlipper viewFlipper;
+
+	@SuppressWarnings("deprecation")
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		
+		viewFlipper = (ViewFlipper) findViewById(R.id.flipper);
+		slideLeftIn = AnimationUtils.loadAnimation(this, R.anim.slide_left_in);
+		slideRightIn = AnimationUtils.loadAnimation(this, R.anim.slide_right_in);
+
+		gestureDetector = new GestureDetector(new MyGestureDetector());
+		gestureListener = new View.OnTouchListener() {
+			public boolean onTouch(View v, MotionEvent event) {
+				if (gestureDetector.onTouchEvent(event)) {
+					return true;
+				}
+				return false;
+			}
+		};
+		
+		HttpService http = new HttpService("GOOG");
+		Executor myEx = Executors.newCachedThreadPool();
+		myEx.execute(http);
+		
+		TextView name = (TextView)findViewById(R.id.name1);
+		TextView symbol = (TextView)findViewById(R.id.symbol1);
+		TextView price = (TextView)findViewById(R.id.price1);
+		TextView change = (TextView)findViewById(R.id.change1);
+		TextView changePercent = (TextView)findViewById(R.id.changePercent1);
+		
+		ArrayList<SymbolBean> stringBeans = http.getStringBeans();
+		SymbolBean bean = stringBeans.get(0);
+		
+		name.setText(bean.getName());
+		symbol.setText(bean.getSymbol());
+		price.setText(bean.getPrice());
+		change.setText(bean.getChange());
+		changePercent.setText(bean.getChangePercent());
+		
+
+//		Thread trd = new Thread(new Runnable(){
+//			@SuppressWarnings("rawtypes")
+//			@Override
+//			public void run(){
+//
+//				try{
+//		
+//					URL url = new URL("http://cwcraigo.com/stockfeed.php?symbols=GOOG");
+//					HttpURLConnection con = (HttpURLConnection) url.openConnection();
+//
+//					JSONInputStream input = new JSONInputStream(con.getInputStream());
+//					HashMap data = (HashMap) input.readObject();
+//					
+//					SymbolBean bean = new SymbolBean((HashMap) data.get("GOOG"));
+//			
+//				} catch(Exception e){
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//		trd.start();
+		
+		
+	} // end onCreate()
+
+	class MyGestureDetector extends SimpleOnGestureListener {
+		@Override
+		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+				float velocityY) {
+			try {
+				if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
+					return false;
+				// right to left swipe
+				if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE
+						&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+					viewFlipper.setInAnimation(slideLeftIn);
+					viewFlipper.setOutAnimation(slideLeftOut);
+					viewFlipper.showNext();
+				} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE
+						&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+					viewFlipper.setInAnimation(slideRightIn);
+					viewFlipper.setOutAnimation(slideRightOut);
+					viewFlipper.showPrevious();
+				}
+			} catch (Exception e) {
+				// nothing
+			}
+			return false;
+		}
+	}
+
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		if (gestureDetector.onTouchEvent(event))
+			return true;
+		else
+			return false;
+	}
+}

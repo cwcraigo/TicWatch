@@ -1,0 +1,114 @@
+package com.example.ticwatch3;
+
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.Socket;
+import java.net.URL;
+import java.util.HashMap;
+
+import org.quickconnectfamily.json.JSONInputStream;
+import org.quickconnectfamily.json.JSONOutputStream;
+
+
+public class MainActivity extends Activity {
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+
+		super.onCreate(savedInstanceState);
+
+		setContentView(R.layout.activity_main);
+
+		// get favorites form db
+		// get info for favorites from http service
+		// String uuid = "1234";
+		// Thread serverThread = new Thread(new Client(uuid));
+		// serverThread.start();
+
+		// get info for favorites from http service
+		Thread startUp = new Thread(new Runnable() {
+			Socket toServer;
+			OutputStream outStream;
+			InputStream inStream;
+			JSONOutputStream outToServer;
+			JSONInputStream inFromServer;
+			
+			String uuid = "1234";
+			HashMap symbols;
+			
+			URL url;
+			HttpURLConnection con;
+			JSONInputStream inFromService;
+
+			TextView name = (TextView) findViewById(R.id.name1);
+			TextView symbol = (TextView) findViewById(R.id.symbol1);
+			TextView price = (TextView) findViewById(R.id.price1);
+			TextView change = (TextView) findViewById(R.id.change1);
+			TextView changePercent = (TextView) findViewById(R.id.changePercent1);
+			TextView allAtOnce = (TextView) findViewById(R.id.TextView01);
+
+			@Override
+			public void run() {
+
+				try {
+					toServer = new Socket("127.0.0.1", 9292);
+					
+					outStream =  toServer.getOutputStream();
+					outToServer = new JSONOutputStream(outStream);
+
+					outToServer.writeObject(uuid);
+					
+					inStream =  toServer.getInputStream();
+					inFromServer = new JSONInputStream(inStream);
+					
+					boolean check = true;
+					while (check) {
+
+						symbols = (HashMap) inFromServer.readObject();
+						String done = (String) symbols.get("cmd");
+
+						if (done.equals("done")) {
+							toServer.close();
+							check = false;
+						}
+					}
+					
+					url = new URL("http://cwcraigo.com/stockfeed.php?symbols=AAPL");
+					
+					con = (HttpURLConnection) url.openConnection();
+					
+					inStream = con.getInputStream();
+					inFromService = new JSONInputStream(inStream);
+					
+					HashMap map = (HashMap) inFromService.readObject();
+
+					HashMap symInfo = (HashMap) map.get("AAPL");
+					
+					name.setText((CharSequence) symInfo.get("name"));
+					symbol.setText((CharSequence) symInfo.get("symbol"));
+					price.setText((CharSequence) symInfo.get("price"));
+					change.setText((CharSequence) symInfo.get("change"));
+					changePercent.setText((CharSequence) symInfo.get("changePercent"));
+
+					String s = "Name: " + symInfo.get("name") + "\nSymbol: "
+							+ symInfo.get("symbol");
+
+					allAtOnce.setText(s);
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} // end run()
+		}); // end new Thread
+		startUp.start();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+
+}

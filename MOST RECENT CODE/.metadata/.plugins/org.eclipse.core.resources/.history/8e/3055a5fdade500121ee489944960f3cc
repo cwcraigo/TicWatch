@@ -1,0 +1,102 @@
+package gir.example;
+
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import org.quickconnectfamily.json.JSONInputStream;
+import android.app.Activity;
+import android.widget.TextView;
+
+public class HttpService extends Activity implements Runnable  {
+
+	public String  						symbols = "";
+	public HashMap<String, Object> 		data;
+	public ArrayList<SymbolBean> 		stringBeans = new ArrayList<SymbolBean>();
+
+	public HttpService(String symbols,TextView name) {
+		setSymbols(symbols);
+	}
+
+	public HttpService(String[] symbols,TextView name) {
+		int count = symbols.length - 1;
+		for (int i = 0; i < symbols.length; i++) {
+			if (i != count) {
+				this.symbols += symbols[i] + "+";
+			} else {
+				this.symbols += symbols[i];
+			}
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void run() {
+		// Somewhere in your code this is called in a
+		// thread which is not the user interface thread
+
+		try {
+			// Set the URL object to point to the JSON file
+			URL url = new URL("http://cwcraigo.com/stockfeed.php?symbols="+symbols);
+
+			// Connect to the site using HttpURLConnecton
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+
+			// Setup input stream using JSONInputStream to easily retrieve data
+			JSONInputStream input = new JSONInputStream(con.getInputStream());
+
+			// Get the JSON object as a HashMap
+			setData((HashMap<String, Object>) input.readObject());
+
+			for (String key : data.keySet()) {
+				stringBeans.add(new SymbolBean((HashMap<String,String>)data.get(key)));
+			}
+
+			
+//			TextView name = (TextView)findViewById(R.id.name1);
+//			TextView symbol = (TextView)findViewById(R.id.symbol1);
+//			TextView price = (TextView)findViewById(R.id.price1);
+//			TextView change = (TextView)findViewById(R.id.change1);
+//			TextView changePercent = (TextView)findViewById(R.id.changePercent1);
+			
+			name.setText(stringBeans.get(0).getName());
+//			symbol.setText(stringBeans.get(0).getSymbol());
+//			price.setText(stringBeans.get(0).getPrice());
+//			change.setText(stringBeans.get(0).getChange());
+//			changePercent.setText(stringBeans.get(0).getChangePercent());
+			
+			
+			
+			// System.out.println(this.stringBeans.toString());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	} // end run
+
+	public String getSymbols() {
+		return symbols;
+	}
+
+	public void setSymbols(String symbols) {
+		this.symbols = symbols;
+	}
+
+	public HashMap<String, Object> getData() {
+		return data;
+	}
+
+	public void setData(HashMap<String, Object> data) {
+		this.data = data;
+	}
+
+	public ArrayList<SymbolBean> getStringBeans() {
+		return stringBeans;
+	}
+
+	public void setStringBeans(ArrayList<SymbolBean> stringBeans) {
+		this.stringBeans = stringBeans;
+	}
+
+}

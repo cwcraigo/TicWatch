@@ -1,0 +1,31 @@
+package gir.TicWatch;
+
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import org.quickconnectfamily.json.JSONInputStream;
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.GestureDetector;
+import android.view.GestureDetector.SimpleOnGestureListener;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.TextView;
+import android.widget.ViewFlipper;
+
+public class HttpService {
+	
+
+
+
+	
+	
+	
+	
+
+	
+
+}

@@ -1,0 +1,55 @@
+package com.example.ticwatch3;
+
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import org.quickconnect.json.JSONInputStream;
+
+import android.os.Bundle;
+import android.app.Activity;
+import android.view.Menu;
+import android.widget.TextView;
+
+public class MainActivity extends Activity {
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		
+		Thread trd = new Thread(new Runnable(){
+			
+			@Override
+			public void run(){
+
+				TextView name = (TextView)findViewById(R.id.name1);
+				TextView symbol = (TextView)findViewById(R.id.symbol1);
+				TextView price = (TextView)findViewById(R.id.price1);
+				TextView change = (TextView)findViewById(R.id.change1);
+				TextView changePercent = (TextView)findViewById(R.id.changePercent1);
+
+				try{
+
+				    URL url = new URL("http://cwcraigo.com/stockfeed.php?symbols="+this.symbols);
+				    HttpURLConnection con = (HttpURLConnection) url.openConnection();
+				    JSONInputStream input = new JSONInputStream(con.getInputStream());
+				    
+					name.setText("name");
+					symbol.setText("symbol");
+					price.setText("price");
+					change.setText("change");
+					changePercent.setText("changePercent");
+				} catch(Exception e){}
+			}
+		});
+		trd.start();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+
+}
