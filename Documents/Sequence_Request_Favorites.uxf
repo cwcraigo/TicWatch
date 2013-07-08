@@ -713,8 +713,8 @@ singleUserQ</panel_attributes>
     <coordinates>
       <x>1211</x>
       <y>434</y>
-      <w>49</w>
-      <h>28</h>
+      <w>55</w>
+      <h>34</h>
     </coordinates>
     <panel_attributes>lt=&lt;.</panel_attributes>
     <additional_attributes>42;21;21;21</additional_attributes>
@@ -736,8 +736,8 @@ user</panel_attributes>
     <coordinates>
       <x>1239</x>
       <y>455</y>
-      <w>28</w>
-      <h>203</h>
+      <w>34</w>
+      <h>209</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
     <additional_attributes>21;21;21;196</additional_attributes>
@@ -783,8 +783,8 @@ user</panel_attributes>
     <coordinates>
       <x>1246</x>
       <y>469</y>
-      <w>49</w>
-      <h>28</h>
+      <w>55</w>
+      <h>34</h>
     </coordinates>
     <panel_attributes>lt=&lt;.</panel_attributes>
     <additional_attributes>42;21;21;21</additional_attributes>
@@ -902,8 +902,8 @@ favList</panel_attributes>
     <coordinates>
       <x>1281</x>
       <y>511</y>
-      <w>49</w>
-      <h>28</h>
+      <w>55</w>
+      <h>34</h>
     </coordinates>
     <panel_attributes>lt=&lt;.</panel_attributes>
     <additional_attributes>42;21;21;21</additional_attributes>
@@ -1104,8 +1104,8 @@ setCommand("done")
     <coordinates>
       <x>1204</x>
       <y>378</y>
-      <w>28</w>
-      <h>280</h>
+      <w>34</w>
+      <h>286</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
     <additional_attributes>21;21;21;273</additional_attributes>
@@ -1115,8 +1115,8 @@ setCommand("done")
     <coordinates>
       <x>1274</x>
       <y>490</y>
-      <w>28</w>
-      <h>168</h>
+      <w>34</w>
+      <h>174</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
     <additional_attributes>21;21;21;161</additional_attributes>
@@ -1126,8 +1126,8 @@ setCommand("done")
     <coordinates>
       <x>1351</x>
       <y>525</y>
-      <w>28</w>
-      <h>133</h>
+      <w>34</w>
+      <h>139</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
     <additional_attributes>21;21;21;126</additional_attributes>
@@ -1267,8 +1267,8 @@ outStream</panel_attributes>
     <coordinates>
       <x>1421</x>
       <y>588</y>
-      <w>28</w>
-      <h>70</h>
+      <w>34</w>
+      <h>76</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
     <additional_attributes>21;21;21;63</additional_attributes>
