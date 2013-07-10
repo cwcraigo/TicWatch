@@ -30,7 +30,7 @@ END;
 -- TABLE TW_USER
 CREATE TABLE tw_user
 ( user_id NUMBER       CONSTRAINT pk_tw_user PRIMARY KEY
-, tw_uid  VARCHAR2(20) CONSTRAINT nn_tw_user_1 NOT NULL);
+, uuid    VARCHAR2(20) CONSTRAINT nn_tw_user_1 NOT NULL);
 -- SEQUENCE TW_USER_S1
 -- CREATE SEQUENCE tw_user_s1;
 
